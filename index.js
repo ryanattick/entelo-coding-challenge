@@ -9,10 +9,26 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+let senderEmail, password, sendTo, subject, text;
+
+router.use(function(req, res, next) {
+  console.log('Server is running.');
+  next();
+});
 
 app.use('/api', router);
 
+// Test Route
+router.get('/', function(req, res) {
+  res.json({message: 'Welcome to our API!'});
+});
 
+router.route('/userEmail')
+  .post(function(req, res) {
+    senderEmail = req.body.senderEmail
+    password = req.body.password
+    res.status(200).send({email: senderEmail, password: password})
+  })
 
 
 
