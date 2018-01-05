@@ -31,10 +31,50 @@ router.route('/userEmail')
   })
 
 
+  router.route('/sendMessage')
+    .post(function(req, res) {
+      sendTo = req.body.sendTo;
+      subject = req.body.subject;
+      text = req.body.text;
+
+      let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: senderEmail,
+          pass: password
+        }
+      });
+
+      let mailOptions = {
+        from: senderEmail, // sender address
+        to: sendTo, // list of receivers
+        subject: subject, // Subject line
+        text: text // plain text body
+      };
+
+      transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+          res.send({err: err});
+        }
+        else {
+          res.send({info: info});
+        }
+      })
+      // res.status(200).send({transporter: transporter.auth})
+      if (!senderEmail) {
+        res.send('Unfortunately, no sender email has been provided. Please use the /userEmail endpoint to enter an email address and password from which to send the email. Thank you!')
+      }
+    })
 
 app.listen(3000, function() {
   console.log('listening on port 3000!');
 });
+
+// {
+// 	"sendTo": "spencer.attick@gmail.com",
+// 	"subject": "YEAHHH?",
+// 	"text": "IT WORKS!"
+// }
 
 
 
