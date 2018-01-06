@@ -1,6 +1,6 @@
 var HTMLWedpackPlugin = require('html-webpack-plugin');
 var HTMLWebpackPluginConfig = new HTMLWedpackPlugin({
-  template: __dirname + '/index.html',
+  template: __dirname + '/dist/index.html',
   filename: 'index.html',
   inject: 'body'
 });
@@ -37,7 +37,6 @@ module.exports = {
   },
   output: {
     filename: 'transformed.js',
-    path: __dirname + '/builds'
+    path: __dirname + '/dist'
   },
-  // plugins: [HTMLWebpackPluginConfig]
 };
