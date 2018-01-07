@@ -4,8 +4,6 @@ import $ from 'jquery';
 import GetEmail from './GetEmail.jsx';
 import GetMessage from './GetMessage.jsx';
 import EmailSent from './EmailSent.jsx';
-import EmailError from './EmailError.jsx';
-
 
 class App extends Component {
   constructor(props) {
