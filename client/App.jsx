@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import $ from 'jquery';
 import GetEmail from './GetEmail.jsx';
 import GetMessage from './GetMessage.jsx';
+import EmailSent from './EmailSent.jsx';
+import EmailError from './EmailError.jsx';
 
 
 class App extends Component {
@@ -16,6 +19,9 @@ class App extends Component {
       emailEntered: false
     };
     this.moveEmailDataToApp = this.moveEmailDataToApp.bind(this);
+    this.moveMessageDataToApp = this.moveMessageDataToApp.bind(this);
+    this.sendEmailDataToAPI = this.sendEmailDataToAPI.bind(this);
+    this.sendMessageDataToAPI = this.sendMessageDataToAPI.bind(this);
   }
 
 moveEmailDataToApp(email, password) {
@@ -23,7 +29,7 @@ moveEmailDataToApp(email, password) {
     senderEmail: email,
     password: password,
     emailEntered: true
-  });
+  }, () => {this.sendEmailDataToAPI(this.state.senderEmail, this.state.password)});
 }
 
 moveMessageDataToApp(sendTo, subject, message) {
@@ -31,7 +37,30 @@ moveMessageDataToApp(sendTo, subject, message) {
     sendTo: sendTo,
     subject: subject,
     message: message
-  });
+  }, () => {this.sendMessageDataToAPI(this.state.sendTo, this.state.subject, this.state.message)});
+}
+
+sendEmailDataToAPI(email, password) {
+  $.post( '/api/userEmail', {senderEmail: email, password: password} )
+    .done(function() {
+      console.log('Email added!')
+    })
+    .fail(function(err) {
+      console.log('There was an error adding email.', err)
+    })
+}
+
+sendMessageDataToAPI(sendTo, subject, text) {
+  $.post( '/api/sendMessage', {sendTo: sendTo, subject: subject, text: text} )
+    .done(function() {
+      console.log('Email sent!');
+    })
+    .fail(function(err) {
+      console.log(err);
+    })
+  this.setState({
+    emailEntered: 'sent'
+  })
 }
 
 
@@ -45,8 +74,11 @@ moveMessageDataToApp(sendTo, subject, message) {
           {!this.state.emailEntered &&
             <GetEmail moveEmailDataToApp={this.moveEmailDataToApp}/>
           }
-          {this.state.emailEntered &&
-            <GetMessage/>
+          {this.state.emailEntered === true &&
+            <GetMessage moveMessageDataToApp={this.moveMessageDataToApp}/>
+          }
+          {this.state.emailEntered === 'sent' &&
+            <EmailSent sendTo={this.state.sendTo}/>
           }
         </div>
       </div>

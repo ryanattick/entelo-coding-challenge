@@ -47,16 +47,17 @@ class GetMessage extends Component {
         <form>
           <div className="form-group">
             <label>Sent To:</label>
-            <input type="email" className="form-control" placeholder="name@example.com"/>
+            <input type="email" className="form-control" onChange={this.handleSendToInput} placeholder="name@example.com"/>
           </div>
           <div className="form-group">
             <label>Subject:</label>
-            <input type="text" className="form-control" placeholder="subject"/>
+            <input type="text" className="form-control" onChange={this.handleSubjectInput} placeholder="subject"/>
           </div>
           <div className="form-group">
             <label>Message:</label>
-            <textarea className="form-control" rows="3" placeholder="Type your message text here."></textarea>
+            <textarea className="form-control" onChange={this.handleMessageInput} rows="3" placeholder="Type your message text here."></textarea>
           </div>
+          <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Send</button>
         </form>
       </div>
     );
