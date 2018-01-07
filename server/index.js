@@ -22,7 +22,7 @@ app.use('/api', router);
 
 // Test Route
 router.get('/', function(req, res) {
-  res.json({message: 'Welcome to our API!'});
+  res.send({message: 'Welcome to our API!'});
 });
 
 router.route('/userEmail')
